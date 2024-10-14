@@ -33,7 +33,7 @@ TASK_CONFIG = {'Competition-Math': 'Academic', 'ProofWiki_Proof': 'Academic', 'P
                'NevIR': 'Web', 'IFEval': 'Web'}
 
 # Some tasks share the same document corpus
-
+# corpus name -> tasks using this corpus
 SHARE_CORPUS = {'AY2': ['AY2', 'ELI5', 'Fever', 'TREx', 'WnCw', 'WnWi', 'WoW', 'zsRE'],
                 'ProCIS-Dialog': ['ProCIS-Dialog', 'ProCIS-Turn'],
                 'CAsT_2019': ['CAsT_2019', 'CAsT_2020'],
