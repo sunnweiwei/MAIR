@@ -1,11 +1,11 @@
 # MAIR: A Massive Benchmark for Evaluating Instructed Retrieval
 
-[![Generic badge](https://img.shields.io/badge/arXiv-2304.09542-red.svg)](https://arxiv.org/abs/2304.09542)
+[![Generic badge](https://img.shields.io/badge/arXiv-2410.10127-red.svg)](https://arxiv.org/abs/2410.10127)
 [![LICENSE](https://img.shields.io/badge/license-Apache-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 
 We introduce MAIR (Massive Instructed Retrieval Benchmark), a heterogeneous benchmark designed for evaluating instructed information retrieval (IR). MAIR includes 126 retrieval tasks across 6 domains, collected from existing datasets, with each query annotated with detailed retrieval instructions. Compared to other IR benchmarks, MAIR extends the evaluation scope to broader IR applications, including those in RAG, code retrieval, agent-based retrieval, biomedical, legal IR, and more. It also enhances evaluation efficiency through careful data sampling and diversification.
 
-- Paper: [MAIR: A Massive Benchmark for Evaluating Instructed Information Retrieval](https://github.com/sunnweiwei/MAIR/blob/main/assets/Paper.pdf)
+- Paper: [MAIR: A Massive Benchmark for Evaluating Instructed Information Retrieval](https://arxiv.org/abs/2410.10127)
 - Data Examples: [MAIR-Example.pdf](https://github.com/sunnweiwei/MAIR/blob/main/assets/MAIR-Example.pdf)
 
 ## News
