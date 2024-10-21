@@ -109,7 +109,7 @@ Evaluating text embedding models
 from mair import eval_embedding
 from sentence_transformers import SentenceTransformer
 model = SentenceTransformer('Alibaba-NLP/gte-base-en-v1.5', trust_remote_code=True)
-outputs = eval_embedding(model, tasks=['Competition-Math'], instruct=True)  # tasks is a list of task name to be evaluated. outputs contain retrieval results, can be used as input of reranker
+outputs = eval_embedding(model, tasks=['CQADupStack'], instruct=True)  # tasks is a list of task names to be evaluated. outputs contain retrieval results, which can be used as input for reranker
 ```
 
 Evaluating re-ranking models
@@ -117,7 +117,7 @@ Evaluating re-ranking models
 from mair import eval_rerank
 from sentence_transformers import CrossEncoder
 model = CrossEncoder("jinaai/jina-reranker-v2-base-multilingual", automodel_args={"torch_dtype": "auto"}, trust_remote_code=True)
-outputs = eval_rerank(model, tasks=['Competition-Math'], instruct=True, first_stage=None)  # first_stage is the first-stage retrieval results. if None then use OpenAI text-embedding-3-small results cached at MAIR-Bench/MAIR-Results-text-embedding-3-small
+outputs = eval_rerank(model, tasks=['MISeD'], instruct=True, first_stage=None)  # first_stage is the first-stage retrieval results. If None, then use OpenAI text-embedding-3-small results cached at MAIR-Bench/MAIR-Results-text-embedding-3-small
 ```
 
 Evaluating RankGPT
@@ -125,13 +125,13 @@ Evaluating RankGPT
 from mair import eval_rerank
 from rankgpt import RankGPT
 model = RankGPT(model='gpt-4o-mini')
-outputs = eval_rerank(model, tasks=['Competition-Math'], instruct=True, first_stage=None)
+outputs = eval_rerank(model, tasks=['Core17'], instruct=True, first_stage=None)
 ```
 
 Evaluating BM25
 ```python
 from mair import eval_bm25
-outputs = eval_bm25(tasks=['Competition-Math'], instruct=False)
+outputs = eval_bm25(tasks=['SWE-Bench-Lite'], instruct=False)
 ```
 
 Evaluating multiple tasks or domains
@@ -146,12 +146,13 @@ TASK_CONFIG  # task name -> domain mapping
   <img src="assets/Results_Bar.png" alt="Evaluation results on MAIR compare model performance with and without instructions." width="700"/>
 </p>
 
-## Evaluation on IFEval
+### Evaluation on IFEval
 We designed the IFEval task (Zhou et al., 2023) within MAIR, which consists of 8 different instruction-following subtasks, such as `format` (selecting responses in a specific format), `keywords` (including specific words), and `length` (adhering to length restrictions). 
 ```python
-from mair import RankGPT, eval_rerank
-model = RankGPT(model='gpt-4o', api_key='XXX')
-results = eval_rerank(model=model, tasks=['IFEval'], report_sub_task=True)
+from mair import eval_rerank
+from rankgpt import RankGPT
+model = RankGPT(model='gpt-4o')
+results = eval_rerank(model=model, tasks=['IFEval'])
 ```
 
 <p align="center">
