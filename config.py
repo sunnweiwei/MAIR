@@ -54,6 +54,7 @@ def get_tasks_by_domain(domain):
     for task in TASK_CONFIG:
         if TASK_CONFIG[task] == domain:
             out.append(task)
+    return out
 
 # return list of all tasks
 def get_all_tasks():
