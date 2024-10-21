@@ -33,7 +33,7 @@ TASK_CONFIG = {'Competition-Math': 'Academic', 'ProofWiki_Proof': 'Academic', 'P
                'NevIR': 'Web', 'IFEval': 'Web'}
 
 # Some tasks share the same document corpus
-# corpus name -> tasks using this corpus
+# corpus name -> tasks used this corpus
 SHARE_CORPUS = {'AY2': ['AY2', 'ELI5', 'Fever', 'TREx', 'WnCw', 'WnWi', 'WoW', 'zsRE'],
                 'ProCIS-Dialog': ['ProCIS-Dialog', 'ProCIS-Turn'],
                 'CAsT_2019': ['CAsT_2019', 'CAsT_2020'],
@@ -46,3 +46,15 @@ SHARE_CORPUS = {'AY2': ['AY2', 'ELI5', 'Fever', 'TREx', 'WnCw', 'WnWi', 'WoW', '
                 'AdHoc_2006': ['Genomics-AdHoc_2006', 'Genomics-AdHoc_2007'],
                 'NeuCLIR_2022': ['NeuCLIR_2022', 'NeuCLIR_2023'],
                 'ToT_2023': ['ToT_2023', 'ToT_2024']}
+
+# get all tasks of a domain (Academic, Code, Web, Legal, Medical, Finance)
+def get_tasks_by_domain(domain):
+    assert domain in ['Academic', 'Code', 'Web', 'Legal', 'Medical', 'Finance']
+    out = []
+    for task in TASK_CONFIG:
+        if TASK_CONFIG[task] == domain:
+            out.append(task)
+
+# return list of all tasks
+def get_all_tasks():
+    return list(TASK_CONFIG.keys())
