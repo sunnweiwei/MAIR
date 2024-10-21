@@ -134,7 +134,8 @@ def eval_embedding(model, tasks, instruct=True):
 def eval_rerank(model, tasks, instruct=True, first_stage=None):
     if first_stage is None:
         first_stage = load_dataset('MAIR-Bench/MAIR-Results-text-embedding-3-small')['train']
-    output_dict = defaultdict(list)
+    
+  output_dict = defaultdict(list)
     for task in tasks:
         if task in output_dict:
             continue
@@ -142,7 +143,10 @@ def eval_rerank(model, tasks, instruct=True, first_stage=None):
         docs = load_dataset('MAIR-Bench/MAIR-Docs', task)
         for split in data:
             doc_split = 'docs' if split == 'queries' else split.replace('_queries', '_docs')
-            results = first_stage[task + '/' + split][-1][-1]['results']
+            try:
+                results = first_stage[task + '/' + split][-1]['results']
+            except:
+                results = first_stage[task + '/' + split][-1][-1]['results']
             query_data = {item['qid']: item for item in data[split]}
             doc_data = {item['id']: item for item in docs[doc_split]}
             new_results = {}
@@ -202,7 +206,9 @@ def eval_bm25(tasks, instruct=True):
                 if instruct:
                     query = item['instruction'] + ' ' + query
                 query_tokens = bm25s.tokenize(query)
-                hits, scores = retriever.retrieve(query_tokens, corpus=doc_ids, k=100)
+                if len(query_tokens.vocab) == 0:
+                    query_tokens = bm25s.tokenize('NONE', stopwords=[])
+                hits, scores = retriever.retrieve(query_tokens, corpus=doc_ids, k=min(100, len(doc_ids)))
                 results[item['qid']] = {}
                 for i in range(len(hits[0])):
                     results[item['qid']][hits[0, i]] = float(scores[0, i])
@@ -218,4 +224,5 @@ def eval_bm25(tasks, instruct=True):
             print(task + '/' + split, eval_results)
     print_results(output_dict)
     return output_dict
+
 
