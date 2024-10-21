@@ -45,11 +45,18 @@ def trec_eval(qrels: Dict[str, Dict[str, int]],
     return all_metrics
 
 
-def print_results(output_dict, metrics=['NDCG@1', 'NDCG@5', 'NDCG@10']):
+def print_results(output_dict, metrics=['NDCG@1', 'NDCG@5', 'NDCG@10'], report_sub_task=True):
     task_results = defaultdict(list)
     for k, v in output_dict.items():
         v = v[-1]
         task_results[v['task']].append(v)
+        try:
+            sub_task = k.split('/')[1].split('__')[-2]
+            sub_task = f"-- {v['task']}/{sub_task}"
+            task_results[sub_task].append(v)
+        except:
+            pass
+
     table_data = []
     avg_score = [0 for _ in range(len(metrics))]
     avg_size = [0 for _ in range(len(metrics))]
@@ -58,10 +65,13 @@ def print_results(output_dict, metrics=['NDCG@1', 'NDCG@5', 'NDCG@10']):
         for i, metric in enumerate(metrics):
             score = [x['eval_results'][metric] * x['size'] for x in task_results[task]]
             size = [x['size'] for x in task_results[task]]
-            avg_score[i] += sum(score)
-            avg_size[i] += sum(size)
+            if '-- ' not in task:
+                avg_score[i] += sum(score)
+                avg_size[i] += sum(size)
             score = sum(score) / sum(size)
             score = score * 100
+            if '-- ' in task and not report_sub_task:
+                continue
             line.append(f"{score:.2f}")
         table_data.append(line)
     line = ['Avg']
@@ -134,7 +144,6 @@ def eval_embedding(model, tasks, instruct=True):
 def eval_rerank(model, tasks, instruct=True, first_stage=None):
     if first_stage is None:
         first_stage = load_dataset('MAIR-Bench/MAIR-Results-text-embedding-3-small')['train']
-    
     output_dict = defaultdict(list)
     for task in tasks:
         if task in output_dict:
@@ -224,5 +233,4 @@ def eval_bm25(tasks, instruct=True):
             print(task + '/' + split, eval_results)
     print_results(output_dict)
     return output_dict
-
 
