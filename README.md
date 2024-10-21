@@ -108,26 +108,38 @@ Evaluating text embedding models
 ```python
 from mair import eval_embedding
 from sentence_transformers import SentenceTransformer
-model_name = "sentence-transformers/all-MiniLM-L6-v2"
-model = SentenceTransformer(model_name)
+model = SentenceTransformer('Alibaba-NLP/gte-base-en-v1.5', trust_remote_code=True)
+outputs = eval_embedding(model, tasks=['Competition-Math'], instruct=True)  # tasks is a list of task name to be evaluated. outputs contain retrieval results, can be used as input of reranker
 ```
 
 Evaluating re-ranking models
 ```python
 from mair import eval_rerank
 from sentence_transformers import CrossEncoder
-model_name = "jinaai/jina-reranker-v2-base-multilingual"
-model = CrossEncoder(model_name)
+model = CrossEncoder("jinaai/jina-reranker-v2-base-multilingual", automodel_args={"torch_dtype": "auto"}, trust_remote_code=True)
+outputs = eval_rerank(model, tasks=['Competition-Math'], instruct=True, first_stage=None)  # first_stage is the first-stage retrieval results. if None then use OpenAI text-embedding-3-small results cached at MAIR-Bench/MAIR-Results-text-embedding-3-small
 ```
 
 Evaluating RankGPT
 ```python
-from mair import RankGPT, eval_rerank
+from mair import eval_rerank
+from rankgpt import RankGPT
+model = RankGPT(model='gpt-4o-mini')
+outputs = eval_rerank(model, tasks=['Competition-Math'], instruct=True, first_stage=None)
 ```
 
 Evaluating BM25
 ```python
-from mair import BM25, eval_bm25
+from mair import eval_bm25
+outputs = eval_bm25(tasks=['Competition-Math'], instruct=False)
+```
+
+Evaluating multiple tasks or domains
+```python
+from config import get_tasks_by_domain, get_all_tasks, TASK_CONFIG
+get_tasks_by_domain('Code')  # returns a list of tasks for a domain
+get_all_tasks()  # returns a list of all tasks
+TASK_CONFIG  # task name -> domain mapping
 ```
 
 <p align="center">
