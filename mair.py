@@ -135,7 +135,7 @@ def eval_rerank(model, tasks, instruct=True, first_stage=None):
     if first_stage is None:
         first_stage = load_dataset('MAIR-Bench/MAIR-Results-text-embedding-3-small')['train']
     
-  output_dict = defaultdict(list)
+    output_dict = defaultdict(list)
     for task in tasks:
         if task in output_dict:
             continue
