@@ -140,6 +140,8 @@ from config import get_tasks_by_domain, get_all_tasks, TASK_CONFIG
 get_tasks_by_domain('Code')  # returns a list of tasks for a domain
 get_all_tasks()  # returns a list of all tasks
 TASK_CONFIG  # task name -> domain mapping
+
+outputs = eval_embedding(model: SentenceTransformer, tasks=get_all_tasks(), instruct=True)  # eval on all tasks
 ```
 
 <p align="center">
@@ -152,7 +154,7 @@ We designed the IFEval task (Zhou et al., 2023) within MAIR, which consists of 8
 from mair import eval_rerank
 from rankgpt import RankGPT
 model = RankGPT(model='gpt-4o')
-results = eval_rerank(model=model, tasks=['IFEval'])
+results = eval_rerank(model=model, tasks=['IFEval'], instruct=True, first_stage=None)
 ```
 
 <p align="center">
